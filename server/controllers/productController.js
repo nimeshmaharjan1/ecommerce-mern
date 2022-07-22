@@ -1,6 +1,7 @@
 import handleAsyncError from "../middleware/catchAsyncError.js";
 import ProductModel from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import Feature from "../utils/features.js";
 
 const getSingleProduct = handleAsyncError(async (req, res, next) => {
   let product = await ProductModel.findById(req.params.id);
@@ -13,10 +14,17 @@ const getSingleProduct = handleAsyncError(async (req, res, next) => {
   });
 });
 const getAllProducts = handleAsyncError(async (req, res) => {
-  const products = await ProductModel.find();
+  const resultPerpage = 5;
+  const productCount = await ProductModel.countDocuments();
+  const apiFeature = new Feature(ProductModel.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resultPerpage);
+  const products = await apiFeature.query;
   res.status(201).json({
     success: true,
     products,
+    productCount,
   });
 });
 
