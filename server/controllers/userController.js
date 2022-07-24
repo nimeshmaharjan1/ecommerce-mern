@@ -82,10 +82,7 @@ const getAllUsers = catchAsyncError(async (req, res, next) => {
 });
 
 const getUser = catchAsyncError(async (req, res, next) => {
-  const user = await userModel.findById(req.params.id);
-  if (!user) {
-    return next(new ErrorHandler("User not found!", 404));
-  }
+  const user = await userModel.findById(req.user.id);
   res.status(200).json({
     success: true,
     user,
@@ -105,6 +102,70 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+const updatePassword = catchAsyncError(async (req, res, next) => {
+  const user = await userModel.findById(req.user.id).select("+password");
+  const doesPasswordMatch = await userModel.comparePassword(
+    req.body.oldPassword
+  );
+  if (!doesPasswordMatch) {
+    return next(new ErrorHandler("Old Password is incorrect!", 401));
+  }
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return next(new ErrorHandler("Passwords do not match!", 401));
+  }
+  user.password = req.body.newPassword;
+  await user.save();
+  sendToken(user, 200, res);
+});
+
+// Update profile user
+const updateProfile = catchAsyncError(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+  };
+  const user = userModel.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  sendToken(user, 200, res);
+});
+
+//Update role admin
+const updateRole = catchAsyncError(async (req, res, next) => {
+  const newUserData = {
+    role: req.body.role,
+  };
+  const user = userModel.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not exist with the id: ${req.params.id}`, 404)
+    );
+  }
+  sendToken(user, 200, res);
+});
+
+//Delete user admin
+const deleteUser = catchAsyncError(async (req, res, next) => {
+  const user = await userModel.findById(req.params.id);
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not exist with the id: ${req.params.id}`, 404)
+    );
+  }
+  await user.remove();
+  res.status(200).json({
+    success: true,
+    message: "User has been deleted successfully.",
+  });
+});
+
 export default {
   register,
   login,
@@ -113,4 +174,8 @@ export default {
   getAllUsers,
   getUser,
   resetPassword,
+  updatePassword,
+  updateProfile,
+  updateRole,
+  deleteUser,
 };
