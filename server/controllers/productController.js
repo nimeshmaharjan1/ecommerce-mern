@@ -32,6 +32,7 @@ const getAllProducts = handleAsyncError(async (req, res) => {
  * Add Product - Admin
  */
 const addProduct = handleAsyncError(async (req, res) => {
+  req.body.user = req.user.id
   const product = await ProductModel.create(req.body);
   res.status(201).json({
     success: true,

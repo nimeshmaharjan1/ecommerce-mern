@@ -1,5 +1,11 @@
-import userController from "../controllers/userController";
+import userController from "../controllers/userController.js";
 import express from "express";
 const userRoute = express.Router();
-userRoute.post("/", userController.register);
+userRoute.post("/register", userController.register);
+userRoute.post("/login", userController.login);
+userRoute.get("/logout", userController.logout);
+userRoute.get("/", userController.getAllUsers);
+userRoute.get("/:id", userController.getUser);
+userRoute.post("/forgot-password", userController.forgotPassword);
+userRoute.put("/reset-password", userController.resetPassword);
 export default userRoute;
