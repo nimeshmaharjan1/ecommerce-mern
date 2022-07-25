@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-
 const URL = "/api/v1";
+
 app.use(`${URL}/products`, productRoute);
 app.use(`${URL}/users`, userRoute);
 app.use(errorMiddleware);
