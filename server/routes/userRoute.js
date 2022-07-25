@@ -5,17 +5,8 @@ const userRoute = express.Router();
 userRoute.post("/register", userController.register);
 userRoute.post("/login", userController.login);
 userRoute.get("/logout", userController.logout);
-userRoute.get(
-  "/",
-  checkAuth.isUserAuthenticated,
-  checkAuth.isAdmin("admin"),
-  userController.getAllUsers
-);
-userRoute.get(
-  "/get-user",
-  checkAuth.isUserAuthenticated,
-  userController.getUser
-);
+userRoute.get("/", userController.getAllUsers);
+userRoute.get("/get-user", userController.getUser);
 userRoute.post("/forgot-password", userController.forgotPassword);
 userRoute.put("/reset-password", userController.resetPassword);
 userRoute.put("/update-password", userController.updatePassword);
