@@ -14,7 +14,7 @@ const getSingleProduct = handleAsyncError(async (req, res, next) => {
   });
 });
 const getAllProducts = handleAsyncError(async (req, res) => {
-  const resultPerpage = 5;
+  const resultPerpage = 8;
   const productCount = await ProductModel.countDocuments();
   const apiFeature = new Feature(ProductModel.find(), req.query)
     .search()

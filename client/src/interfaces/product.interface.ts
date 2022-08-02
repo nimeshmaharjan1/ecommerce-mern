@@ -1,6 +1,6 @@
 export interface Product {
   name: string;
-  images: Array<Image>;
+  images: Image[];
   price: string;
   _id: string;
 }
