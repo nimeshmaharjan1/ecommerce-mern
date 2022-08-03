@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Product } from "../../interfaces/product.interface";
 import { RootState } from "../store";
 
 const initialState = {
-  products: [],
+  products: [] as Product[],
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
@@ -14,7 +15,7 @@ export const getAllProducts = createAsyncThunk(
     return response.data;
   }
 );
-const productSlice = createSlice({
+const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {},
@@ -38,5 +39,9 @@ export const selectAllProducts = (state: RootState) =>
   state.productStore.products;
 export const getProductStatus = (state: RootState) => state.productStore.status;
 export const getProductError = (state: RootState) => state.productStore.error;
-
-export default productSlice.reducer;
+export const selectSingleProduct = (state: RootState, productId: string) => {
+  return state.productStore.products.find(
+    (product) => product._id === productId
+  );
+};
+export default productsSlice.reducer;

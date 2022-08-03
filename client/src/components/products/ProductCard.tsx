@@ -4,14 +4,15 @@ import ReactStars from "react-rating-stars-component";
 import { Card, Typography } from "antd";
 import { Product } from "../../interfaces/product.interface";
 import "../../styles/Product.scss";
-import { useSelector } from "react-redux";
-import { getProductStatus } from "../../store/products/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductStatus } from "../../store/products/productsSlice";
 interface ProductCardProps {
   product: Product;
 }
 const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
   const productStatus = useSelector(getProductStatus);
   const { Title } = Typography;
+  const dispatch = useDispatch();
   const options = {
     edit: false,
     color: "rgba(20,20,20,0.1)",
@@ -20,6 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
     size: 25,
     isHalf: true,
   };
+  const id = product._id as any;
   const [loading, setLoading] = useState(false);
   const { Meta } = Card;
   useEffect(() => {
@@ -29,9 +31,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
       setLoading(false);
     }
   }, [productStatus]);
-
   return (
-    <Link to="/">
+    <Link to={`product/${product._id}`}>
       <Card
         size="default"
         style={{ marginTop: 16 }}

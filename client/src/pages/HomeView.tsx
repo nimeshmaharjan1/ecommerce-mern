@@ -3,14 +3,13 @@ import ProductCard from "../components/products/ProductCard";
 import { Row, Col, Spin } from "antd";
 import MetaData from "../utils/MetaData";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "antd";
 import { Product } from "../interfaces/product.interface";
 import {
   getAllProducts,
   getProductError,
   getProductStatus,
   selectAllProducts,
-} from "../store/products/productSlice";
+} from "../store/products/productsSlice";
 import { AppDispatch } from "../store/store";
 import { useAlert } from "react-alert";
 const HomeView = () => {
@@ -27,7 +26,7 @@ const HomeView = () => {
     if (productStatus === "idle") {
       dispatch(getAllProducts());
     }
-  }, [productStatus, dispatch, products]);
+  }, [productStatus, dispatch, products, alert, error]);
   let homeSection;
   const spinnerStyle = {
     display: "flex",
