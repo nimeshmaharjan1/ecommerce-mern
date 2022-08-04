@@ -11,8 +11,8 @@ const initialState = {
 };
 export const getAllProducts = createAsyncThunk(
   "products/getAllProducts",
-  async () => {
-    const response = await axios.get("/api/v1/products");
+  async (keyword: string = "", thunkAPI) => {
+    const response = await axios.get(`/api/v1/products?keyword=${keyword}`);
     return response.data;
   }
 );

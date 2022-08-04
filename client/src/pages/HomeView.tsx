@@ -16,10 +16,9 @@ const HomeView = () => {
   const productStatus = useSelector(getProductStatus);
   const products = useSelector(selectAllProducts);
   const error = useSelector(getProductError);
-
   useEffect(() => {
     if (productStatus === "idle") {
-      dispatch(getAllProducts());
+      dispatch(getAllProducts(""));
     }
   }, [productStatus, dispatch, products, error]);
   let homeSection: ReactNode;
