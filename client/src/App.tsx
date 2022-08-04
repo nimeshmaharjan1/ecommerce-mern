@@ -13,10 +13,9 @@ function App() {
         <Route index element={<HomeView />} />
         <Route path="products">
           <Route index element={<AllProducts />}></Route>
-          <Route
-            path="allproducts?keyword=hero"
-            element={<AllProducts />}
-          ></Route>
+          <Route path=":keyword" element={<AllProducts />}></Route>
+        </Route>
+        <Route path="product">
           <Route path=":id" element={<SingleProduct />}></Route>
         </Route>
       </Route>

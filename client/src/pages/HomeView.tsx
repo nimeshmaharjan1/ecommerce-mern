@@ -17,10 +17,8 @@ const HomeView = () => {
   const products = useSelector(selectAllProducts);
   const error = useSelector(getProductError);
   useEffect(() => {
-    if (productStatus === "idle") {
-      dispatch(getAllProducts(""));
-    }
-  }, [productStatus, dispatch, products, error]);
+    dispatch(getAllProducts({ keyword: "", currentPage: 1 }));
+  }, [dispatch, error]);
   let homeSection: ReactNode;
   const spinnerStyle = {
     display: "flex",
