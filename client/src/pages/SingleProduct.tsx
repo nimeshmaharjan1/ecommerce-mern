@@ -2,17 +2,17 @@ import { Col, Row, Button, Carousel } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { storeStatus } from "../../constants/constants.enum";
+import { storeStatus } from "../constants/constants.enum";
 import {
   changeStatus,
   getError,
   getProduct,
   getStatus,
   selectProduct,
-} from "../../store/products/singleProductSlice";
-import { AppDispatch } from "../../store/store";
-import "../../styles/SingleProduct.scss";
-import { toast } from "../../utils/notification";
+} from "../store/products/singleProductSlice";
+import { AppDispatch } from "../store/store";
+import "../styles/SingleProduct.scss";
+import { toast } from "../utils/notification";
 const SingleProduct = () => {
   const params: any = useParams();
   const dispatch = useDispatch<AppDispatch>();
@@ -72,7 +72,7 @@ const SingleProduct = () => {
         <Col xl={12} xs={24}>
           <div className="right-column">
             <div className="product-description">
-              <span>{product.description}</span>
+              <span>{product.category}</span>
               <h1>{product.name}</h1>
               <p>{product.description}</p>
             </div>

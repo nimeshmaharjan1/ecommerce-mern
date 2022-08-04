@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
     }
   }, [productStatus]);
   return (
-    <Link to={`product/${product._id}`}>
+    <Link to={`products/${product._id}`}>
       <Card
         size="default"
         style={{ marginTop: 16 }}
