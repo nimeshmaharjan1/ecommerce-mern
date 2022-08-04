@@ -1,3 +1,10 @@
+@mixin title {
+  font-weight: 600;
+  font-size: 52px;
+  color: #43484d;
+  letter-spacing: -2px;
+  margin-bottom: 0;
+}
 /* Columns */
 .flexbox {
   display: flex;
@@ -13,7 +20,7 @@
 /* Product Description */
 .product-description {
   border-bottom: 1px solid #e1e8ee;
-  margin-bottom: 20px;
+  margin-bottom: 1.2rem;
 }
 .product-description span {
   font-size: 12px;
@@ -23,10 +30,7 @@
   text-decoration: none;
 }
 .product-description h1 {
-  font-weight: 300;
-  font-size: 52px;
-  color: #43484d;
-  letter-spacing: -2px;
+  @include title();
 }
 .product-description p {
   font-size: 16px;
@@ -39,28 +43,19 @@
 
 .product-price {
   margin-bottom: 1rem;
-  .price {
-    font-size: 26px;
+  span {
+    font-size: 1.4rem;
     font-weight: 300;
-    color: #43474d;
+    color: #707b85;
     margin-right: 20px;
   }
 }
-
-// .cart-btn {
-//   display: inline-block;
-//   background-color: #7dc855;
-//   border-radius: 6px;
-//   font-size: 16px;
-//   color: #ffffff;
-//   text-decoration: none;
-//   padding: 12px 30px;
-//   transition: all 0.3s;
-//   border: none;
-//   cursor: pointer;
-// }
-.cart-btn:hover {
-  background-color: #64af3d;
+.review-section {
+  h1 {
+    @include title();
+    color: #707b85;
+    font-weight: 300;
+  }
 }
 @media (min-width: 1000px) {
   .row {

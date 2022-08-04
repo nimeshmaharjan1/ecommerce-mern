@@ -6,9 +6,15 @@ export interface Product {
   numberOfReviews: number;
   ratings: number;
   description: string;
-  reviews: Array<object>;
+  reviews: Review[];
   category: string;
 }
 interface Image {
   url: string;
+}
+
+interface Review {
+  rating: number;
+  comment: string;
+  title: string;
 }

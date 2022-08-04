@@ -86,12 +86,6 @@
   display: none;
   margin-left: 8px;
 }
-@media (min-width: 767px) {
-  .leftMenu,
-  .rightMenu {
-    display: block;
-  }
-}
 @media (max-width: 767px) {
   .menuButton {
     display: block;

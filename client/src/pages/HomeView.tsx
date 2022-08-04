@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import ProductCard from "../components/products/ProductCard";
 import { Row, Col, Spin } from "antd";
 import MetaData from "../utils/MetaData";
@@ -11,23 +11,18 @@ import {
   selectAllProducts,
 } from "../store/products/productsSlice";
 import { AppDispatch } from "../store/store";
-import { useAlert } from "react-alert";
 const HomeView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const productStatus = useSelector(getProductStatus);
   const products = useSelector(selectAllProducts);
   const error = useSelector(getProductError);
-  const alert = useAlert();
 
   useEffect(() => {
-    if (error) {
-      return alert.error(error);
-    }
     if (productStatus === "idle") {
       dispatch(getAllProducts());
     }
-  }, [productStatus, dispatch, products, alert, error]);
-  let homeSection;
+  }, [productStatus, dispatch, products, error]);
+  let homeSection: ReactNode;
   const spinnerStyle = {
     display: "flex",
     justifyContent: "center",
@@ -44,7 +39,7 @@ const HomeView = () => {
     homeSection = (
       <div className="home">
         <MetaData title={"Home"}></MetaData>
-        <section className="featured-products">
+        <section className="featured-products" style={{ marginBottom: "2rem" }}>
           <h1 className="title">Featured Products</h1>
           <Row gutter={[20, 12]}>
             {products &&

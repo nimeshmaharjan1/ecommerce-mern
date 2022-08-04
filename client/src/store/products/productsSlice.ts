@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { storeStatus } from "../../constants/constants.enum";
 import { Product } from "../../interfaces/product.interface";
 import { RootState } from "../store";
 
 const initialState = {
   products: [] as Product[],
-  status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
+  status: storeStatus.IDLE, //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
 export const getAllProducts = createAsyncThunk(
@@ -22,25 +23,26 @@ const productsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getAllProducts.pending, (state, action) => {
-        state.status = "loading";
+        state.status = storeStatus.LOADING;
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = storeStatus.SUCCEEDED;
         state.products = action.payload.products;
       })
       .addCase(getAllProducts.rejected, (state: any, action) => {
-        state.status = "failed";
+        state.status = storeStatus.FAILED;
         state.error = action.error.message;
       });
   },
 });
 
 export const selectAllProducts = (state: RootState) =>
-  state.productStore.products;
-export const getProductStatus = (state: RootState) => state.productStore.status;
-export const getProductError = (state: RootState) => state.productStore.error;
+  state.productsStore.products;
+export const getProductStatus = (state: RootState) =>
+  state.productsStore.status;
+export const getProductError = (state: RootState) => state.productsStore.error;
 export const selectSingleProduct = (state: RootState, productId: string) => {
-  return state.productStore.products.find(
+  return state.productsStore.products.find(
     (product) => product._id === productId
   );
 };

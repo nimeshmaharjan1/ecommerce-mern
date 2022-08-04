@@ -1,11 +1,24 @@
 import React from "react";
-import { Menu, Avatar } from "antd";
+import { Menu, Avatar, Row, Col } from "antd";
 import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
+
+import { Input, Space } from "antd";
+const { Search } = Input;
+const onSearch = (value) => console.log(value);
 
 const RightMenu = ({ mode }) => {
   return (
     <Menu mode={mode}>
+      <Search
+        style={{
+          marginTop: "1rem",
+        }}
+        placeholder="search..."
+        onSearch={onSearch}
+        enterButton
+      />
       <Menu.SubMenu
+        key="hello"
         title={
           <>
             <Avatar icon={<UserOutlined />} />

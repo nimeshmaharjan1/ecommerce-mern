@@ -104,12 +104,13 @@ const deleteProduct = handleAsyncError(async (req, res, next) => {
 
 const createProductReview = handleAsyncError(async (req, res, next) => {
   console.log(req.body);
-  const { productId, rating, comment } = req.body;
+  const { productId, rating, comment, title } = req.body;
   // const productId = req.params.id;
   const review = {
     user: req.user._id,
     name: req.user.name,
     rating: Number(rating),
+    title,
     comment,
   };
 
