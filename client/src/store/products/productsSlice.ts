@@ -6,21 +6,26 @@ import { RootState } from "../store";
 export interface Query {
   keyword: string;
   currentPage: number;
+  price: Array<number> | [0, 250000];
+  category: string | null;
+  rating: number;
 }
 const initialState = {
   products: [] as Product[],
   status: storeStatus.IDLE, //'idle' | 'loading' | 'succeeded' | 'failed',
-  productsCount: 0,
+  productsCount: undefined,
   error: null,
+  resultsPerPage: undefined,
 };
 export const getAllProducts = createAsyncThunk(
   "products/getAllProducts",
   async (query: Query, thunkAPI) => {
-    console.log("query", query);
-    const { keyword = "", currentPage } = query;
-    const response = await axios.get(
-      `/api/v1/products?keyword=${keyword}&page=${currentPage}`
-    );
+    const { keyword = "", currentPage, price, category, rating } = query;
+    let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${rating}`;
+    if (query.category) {
+      link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${rating}`;
+    }
+    const response = await axios.get(link);
     return response.data;
   }
 );
@@ -35,7 +40,7 @@ const productsSlice = createSlice({
       })
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.status = storeStatus.SUCCEEDED;
-        state.productsCount = action.payload.productCount;
+        state.productsCount = action.payload.productsCount;
         state.products = action.payload.products;
       })
       .addCase(getAllProducts.rejected, (state: any, action) => {
@@ -52,6 +57,8 @@ export const getProductStatus = (state: RootState) =>
 export const getProductError = (state: RootState) => state.productsStore.error;
 export const getProductsCount = (state: RootState) =>
   state.productsStore.productsCount;
+export const getResultsPerPage = (state: RootState) =>
+  state.productsStore.resultsPerPage;
 export const selectSingleProduct = (state: RootState, productId: string) => {
   return state.productsStore.products.find(
     (product) => product._id === productId

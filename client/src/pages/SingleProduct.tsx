@@ -29,7 +29,6 @@ const SingleProduct = () => {
   useEffect(() => {
     if (status === storeStatus.SUCCEEDED) {
       toast("Success", "Product fetched successfully.", "success");
-      console.log(product);
     } else if (status === storeStatus.FAILED) {
       toast("Error", "Please try again", "error");
     }

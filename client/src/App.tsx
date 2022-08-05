@@ -8,6 +8,8 @@ import AllProducts from "./pages/AllProducts";
 
 function App() {
   return (
+    // http://10.10.30.187:5000
+    // "proxy": "http://192.168.1.71:5000"
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomeView />} />

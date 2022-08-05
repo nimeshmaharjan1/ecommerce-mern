@@ -15,7 +15,7 @@ const getSingleProduct = handleAsyncError(async (req, res, next) => {
 });
 const getAllProducts = handleAsyncError(async (req, res) => {
   const resultPerpage = 8;
-  const productCount = await ProductModel.countDocuments();
+  const productsCount = await ProductModel.countDocuments();
   const apiFeature = new Feature(ProductModel.find(), req.query)
     .search()
     .filter()
@@ -24,7 +24,7 @@ const getAllProducts = handleAsyncError(async (req, res) => {
   res.status(201).json({
     success: true,
     products,
-    productCount,
+    productsCount,
   });
 });
 
@@ -32,9 +32,11 @@ const getAllProducts = handleAsyncError(async (req, res) => {
  * Add Product - Admin
  */
 const addProduct = handleAsyncError(async (req, res) => {
+  console.log(req.user);
   req.body.user = req.user.id;
   const product = await ProductModel.create(req.body);
   res.status(201).json({
+    req: req.body,
     success: true,
     product,
   });

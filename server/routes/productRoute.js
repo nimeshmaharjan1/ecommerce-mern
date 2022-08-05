@@ -3,7 +3,7 @@ import ProductController from "../controllers/productController.js";
 import auth from "../middleware/checkAuth.js";
 const productRoute = express.Router();
 productRoute.get("/", ProductController.getAllProducts);
-productRoute.post("/", auth.isAdmin("admin"), ProductController.addProduct);
+productRoute.post("/", ProductController.addProduct);
 productRoute.put(
   "/review",
   auth.isUserAuthenticated,

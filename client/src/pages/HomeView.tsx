@@ -17,7 +17,15 @@ const HomeView = () => {
   const products = useSelector(selectAllProducts);
   const error = useSelector(getProductError);
   useEffect(() => {
-    dispatch(getAllProducts({ keyword: "", currentPage: 1 }));
+    dispatch(
+      getAllProducts({
+        keyword: "",
+        currentPage: 1,
+        price: [0, 250000],
+        category: null,
+        rating: 0,
+      })
+    );
   }, [dispatch, error]);
   let homeSection: ReactNode;
   const spinnerStyle = {
