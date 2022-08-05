@@ -24,7 +24,7 @@ const AllProducts = () => {
   const productsCount = useSelector(getProductsCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPriceValue, setFilterPriceValue] = useState<[number, number]>([
-    0, 250000,
+    0, 2500000,
   ]);
   const [filterRatingValue, setFilterRatingValue] = useState(0);
   const [category, setCategory] = useState(null);
@@ -40,8 +40,9 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
+    console.log({ keyword });
     dispatch(getAllProducts(query));
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, keyword]);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const openFilterModal = () => {
     setIsFilterModalVisible(true);

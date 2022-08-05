@@ -21,7 +21,7 @@ const getAllProducts = handleAsyncError(async (req, res) => {
     .filter()
     .pagination(resultPerpage);
   const products = await apiFeature.query;
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     products,
     productsCount,
@@ -32,8 +32,6 @@ const getAllProducts = handleAsyncError(async (req, res) => {
  * Add Product - Admin
  */
 const addProduct = handleAsyncError(async (req, res) => {
-  console.log(req.user);
-  req.body.user = req.user.id;
   const product = await ProductModel.create(req.body);
   res.status(201).json({
     req: req.body,

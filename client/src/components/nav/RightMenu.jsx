@@ -9,6 +9,7 @@ const { Search } = Input;
 const RightMenu = ({ mode, history }) => {
   const navigate = useNavigate();
   const onSearch = (value) => {
+    console.log(value);
     if (value.trim()) {
       navigate(`/products/${value}`);
     }
