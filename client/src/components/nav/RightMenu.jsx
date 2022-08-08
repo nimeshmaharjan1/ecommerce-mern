@@ -4,10 +4,13 @@ import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import { Input, Space } from "antd";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/users/userSlice";
 const { Search } = Input;
 
 const RightMenu = ({ mode, history }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onSearch = (value) => {
     console.log(value);
     if (value.trim()) {
@@ -56,7 +59,13 @@ const RightMenu = ({ mode, history }) => {
         <Menu.Item key="about-us">
           <UserOutlined /> Profile
         </Menu.Item>
-        <Menu.Item key="log-out">
+        <Menu.Item
+          key="log-out"
+          onClick={() => {
+            dispatch(logout());
+            navigate("/sign-in");
+          }}
+        >
           <LogoutOutlined /> Logout
         </Menu.Item>
       </Menu.SubMenu>

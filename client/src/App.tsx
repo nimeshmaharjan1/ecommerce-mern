@@ -5,6 +5,8 @@ import HomeView from "./pages/HomeView";
 import SingleProduct from "./pages/SingleProduct";
 import NoMatch from "./pages/NoMatch";
 import AllProducts from "./pages/AllProducts";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         </Route>
       </Route>
       <Route path="*" element={<NoMatch />}></Route>
+      <Route path="/sign-in" element={<SignIn />}></Route>
+      <Route path="/sign-up" element={<SignUp />}></Route>
     </Routes>
   );
 }
