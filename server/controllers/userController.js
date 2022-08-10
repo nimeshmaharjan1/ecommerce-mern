@@ -3,15 +3,20 @@ import userModel from "../models/userModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
-
+import cloudinary from "cloudinary";
 const register = catchAsyncError(async (req, res, next) => {
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
   const { name, username, email, password } = req.body;
   const user = await userModel.create({
     name,
     username,
     email,
     password,
-    avatar: { public_id: "This is a sample id", url: "this is a sample url" },
+    avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
   });
   sendToken(user, 201, res);
 });

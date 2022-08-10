@@ -8,11 +8,16 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../store/store";
+import { Register, register } from "../store/users/userSlice";
 import "../styles/SignUp.scss";
 
 const SignUp = () => {
   const { Title } = Typography;
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [avatarPreview, setAvatarPreview] = useState(
     "https://github.com/vercel/next-learn/blob/master/basics/basics-final/public/images/profile.jpg?raw=true"
   );
@@ -25,6 +30,15 @@ const SignUp = () => {
     formData.append("username", username);
     formData.append("password", password);
     formData.append("avatar", avatar);
+    const registerData: Register = {
+      name,
+      email,
+      username,
+      password,
+      avatar,
+    };
+    dispatch(register(registerData));
+    navigate("/");
   };
   const handleAvatarUpload = (e) => {
     const reader = new FileReader();
@@ -104,7 +118,11 @@ const SignUp = () => {
           <Form.Item name="avatar" style={{ marginBottom: "1.5rem" }}>
             <Row gutter={34} align="middle">
               <Col xs={4}>
-                <img src={avatarPreview} alt="Avatar preview" />
+                <img
+                  src={avatarPreview}
+                  alt="Avatar class preview"
+                  className="sign-up-img"
+                />
               </Col>
               <Col xs={20}>
                 <Input
@@ -131,7 +149,7 @@ const SignUp = () => {
               </Col>
               <Col xs={24} style={{ textAlign: "center", marginTop: "0.5rem" }}>
                 Or already have an account?
-                <Link to="/sign-up"> login now!</Link>
+                <Link to="/sign-in"> login now!</Link>
               </Col>
             </Row>
           </Form.Item>

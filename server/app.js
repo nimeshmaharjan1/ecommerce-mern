@@ -6,10 +6,15 @@ import userRoute from "./routes/userRoute.js";
 import errorMiddleware from "./middleware/error.js";
 import cookieParser from "cookie-parser";
 import auth from "./middleware/checkAuth.js";
+import bodyParser from "body-parser";
+import fileUpload from "express-fileupload";
+
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
 const URL = "/api/v1";
 
 app.use(`${URL}/products`, productRoute);

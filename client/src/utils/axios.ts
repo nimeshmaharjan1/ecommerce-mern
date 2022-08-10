@@ -1,22 +1,24 @@
 import axios from "axios";
 
-export const axiosGet = (url: string, params = {}) => {
-  return axios({
+export const axiosGet = async (url: string, params = {}) => {
+  const res = await axios({
     url,
     method: "GET",
     params,
-  }).then((res) => res.data);
+  });
+  return res.data;
 };
-export const axiosPost = (url: string, data: any) => {
+export const axiosPost = async (url: string, data: any) => {
   console.log(data);
-  return axios({
-    url,
-    method: "post",
-    data,
-  })
-    .then((res) => res)
-    .catch((err) => {
-      console.log(err);
-      return err;
+  try {
+    const res = await axios({
+      url,
+      method: "post",
+      data,
     });
+    return res;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
 };

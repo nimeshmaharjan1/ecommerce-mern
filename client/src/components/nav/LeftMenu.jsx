@@ -9,8 +9,8 @@ const LeftMenu = ({ mode }) => {
         <Menu.Item key="explore">
           <Link to="products">Products</Link>
         </Menu.Item>
-        <Menu.Item key="features">Features</Menu.Item>
-        <Menu.Item key="contact">Contact Us</Menu.Item>
+        {/* <Menu.Item key="features">Features</Menu.Item>
+        <Menu.Item key="contact">Contact Us</Menu.Item> */}
       </Menu>
     </>
   );

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Button, Drawer } from "antd";
+import { Layout, Button, Drawer, Input, Col, Row } from "antd";
 import "../../styles/Navbar.scss";
 import LeftMenu from "./LeftMenu";
 import RightMenu from "./RightMenu";
 import { MenuOutlined } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(!visible);
   };
-
+  const { Search } = Input;
   // If you do not want to auto-close the mobile drawer when a path is selected
   // Delete or comment out the code block below
   // From here
@@ -19,7 +19,15 @@ const Navbar = () => {
   useEffect(() => {
     setVisible(false);
   }, [location]);
+  const navigate = useNavigate();
   // Upto here
+  const onSearch = (value) => {
+    console.log(value);
+    if (value.trim()) {
+      navigate(`/products/${value}`);
+    }
+  };
+
   return (
     <nav className="navbar">
       <Layout>
@@ -37,7 +45,20 @@ const Navbar = () => {
               <MenuOutlined />
             </Button>
             <div className="rightMenu">
-              <RightMenu mode={"horizontal"} />
+              <Row align="middle">
+                <Col>
+                  <Search
+                    style={{ marginTop: "1.1rem" }}
+                    placeholder="search..."
+                    onSearch={onSearch}
+                    enterButton
+                  />
+                </Col>
+                <Col>
+                  {" "}
+                  <RightMenu mode={"horizontal"} />
+                </Col>
+              </Row>
             </div>
 
             <Drawer
