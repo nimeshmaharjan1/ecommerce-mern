@@ -1,11 +1,11 @@
-import { Col, Row, Button, Carousel } from "antd";
-import { useEffect } from "react";
+import { Col, Row, Button, Carousel, InputNumber } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { storeStatus } from "../constants/constants.enum";
+import { addToCart, selectCartItems } from "../store/cart/cartSlice";
+
 import {
-  changeStatus,
-  getError,
   getProduct,
   getStatus,
   selectProduct,
@@ -14,11 +14,21 @@ import { AppDispatch } from "../store/store";
 import "../styles/SingleProduct.scss";
 import { toast } from "../utils/notification";
 const SingleProduct = () => {
+  const [cartQuantity, setCartQuantity] = useState(1);
   const params: any = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const status = useSelector(getStatus);
-  const error = useSelector(getError);
   const product: any = useSelector(selectProduct);
+  const increaseQuantity = () => {
+    if (cartQuantity == product.stock) return;
+    const qty = cartQuantity + 1;
+    setCartQuantity(qty);
+  };
+  const decreaseQuantity = () => {
+    if (1 >= cartQuantity) return;
+    const qty = cartQuantity - 1;
+    setCartQuantity(qty);
+  };
   const contentStyle: React.CSSProperties = {
     height: "600px",
     color: "#fff",
@@ -26,15 +36,62 @@ const SingleProduct = () => {
     textAlign: "center",
     background: "#364d79",
   };
+  const addQuantityIcon = (
+    <span
+      style={{
+        fontSize: "1.1rem",
+        background: "#1890FF",
+        height: "30px",
+        width: "40px",
+        display: "block",
+        color: "white",
+        cursor: "pointer",
+      }}
+      onClick={increaseQuantity}
+    >
+      +
+    </span>
+  );
+  const decreaseQuantityIcon = (
+    <span
+      style={{
+        fontSize: "1.1rem",
+        background: "#1890FF",
+        height: "30px",
+        width: "40px",
+        display: "block",
+        color: "white",
+        cursor: "pointer",
+      }}
+      onClick={decreaseQuantity}
+    >
+      -
+    </span>
+  );
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        product: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].url,
+        stock: product.stock,
+        quantity: cartQuantity,
+      })
+    );
+  };
   useEffect(() => {
     if (status === storeStatus.SUCCEEDED) {
       toast("Success", "Product fetched successfully.", "success");
+      console.log({ product });
     } else if (status === storeStatus.FAILED) {
       toast("Error", "Please try again", "error");
     }
+    if (product.stock < 1) {
+      setCartQuantity(0);
+    }
     dispatch(getProduct(params.id));
-  }, [dispatch, params.id]);
-
+  }, [dispatch, params.id, product.stock]);
   return (
     <>
       <Row className="row" gutter={24}>
@@ -85,27 +142,44 @@ const SingleProduct = () => {
             </div>
 
             <div className="product-price">
-              <span className="price">${product.price}</span>
+              <span className="price" style={{ fontWeight: "semi-bold" }}>
+                ${product.price}
+              </span>
             </div>
-            <Button
-              style={{
-                borderRadius: 8,
-                textTransform: "uppercase",
-                marginBottom: "1.2rem",
-              }}
-              type="primary"
-              size="large"
-              block
-            >
-              Add To Cart
-            </Button>
+            <Row align="middle" gutter={24}>
+              <Col xs={24} md={14}>
+                <Button
+                  style={{
+                    borderRadius: 8,
+                    textTransform: "uppercase",
+                    marginBottom: "1.2rem",
+                  }}
+                  type="primary"
+                  size="large"
+                  block
+                  onClick={handleAddToCart}
+                >
+                  Add To Cart
+                </Button>
+              </Col>
+              <Col xs={24} md={6}>
+                <InputNumber
+                  addonBefore={addQuantityIcon}
+                  addonAfter={decreaseQuantityIcon}
+                  defaultValue={1}
+                  style={{ marginBottom: "1rem", width: "130px" }}
+                  value={cartQuantity}
+                  readOnly
+                />
+              </Col>
+            </Row>
           </div>
         </Col>
-        <Col xs={24}>
+        {/* <Col xs={24}>
           <section className="review-section">
             <h1>Reviews</h1>
           </section>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );
