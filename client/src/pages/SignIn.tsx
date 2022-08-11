@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import { Link } from "react-router-dom";
+import GhostBtn from "../components/buttons/GhostBtn";
 import { storeStatus } from "../constants/constants.enum";
 import { AppDispatch, store } from "../store/store";
 import {
@@ -124,6 +125,9 @@ const SignIn: React.FC = () => {
             </Row>
           </Form.Item>
         </Form>
+        <Link to="/">
+          <GhostBtn>Go Back</GhostBtn>
+        </Link>
       </Card>
     </div>
   );

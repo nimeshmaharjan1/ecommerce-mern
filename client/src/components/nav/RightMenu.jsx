@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Menu, Avatar, Row, Col } from "antd";
 import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
@@ -25,8 +25,9 @@ const RightMenu = ({ mode, history }) => {
       {!isLoggedIn ? (
         <Avatar
           icon={<UserOutlined />}
-          style={{ marginLeft: "1rem" }}
+          style={{ marginLeft: "1rem", cursor: "pointer" }}
           onClick={redirectLogin}
+          id="avatar"
         />
       ) : (
         <Menu mode={mode}>

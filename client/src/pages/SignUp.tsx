@@ -10,6 +10,7 @@ import { Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import GhostBtn from "../components/buttons/GhostBtn";
 import { AppDispatch } from "../store/store";
 import { Register, register } from "../store/users/userSlice";
 import "../styles/SignUp.scss";
@@ -154,6 +155,9 @@ const SignUp = () => {
             </Row>
           </Form.Item>
         </Form>
+        <Link to="/">
+          <GhostBtn>Go Back</GhostBtn>
+        </Link>
       </Card>
     </div>
   );
