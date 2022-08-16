@@ -4,7 +4,7 @@ import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../store/users/userSlice";
-
+import { ShoppingCartOutlined } from "@ant-design/icons";
 const RightMenu = ({ mode, history }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,6 +31,11 @@ const RightMenu = ({ mode, history }) => {
         />
       ) : (
         <Menu mode={mode}>
+          <Menu.Item style={{ marginTop: "0.2rem" }}>
+            <ShoppingCartOutlined
+              style={{ fontSize: "1.5rem", paddingTop: "0.5rem" }}
+            />
+          </Menu.Item>
           <Menu.SubMenu
             key="submenu"
             title={
