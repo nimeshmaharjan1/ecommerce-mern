@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, Avatar, Row, Col } from "antd";
+import { Menu, Avatar, Row, Col, Badge } from "antd";
 import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../store/users/userSlice";
+
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import CartItem from "../cart/CartItem.tsx";
+
 const RightMenu = ({ mode, history }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,11 +34,28 @@ const RightMenu = ({ mode, history }) => {
         />
       ) : (
         <Menu mode={mode}>
-          <Menu.Item style={{ marginTop: "0.2rem" }}>
-            <ShoppingCartOutlined
-              style={{ fontSize: "1.5rem", paddingTop: "0.5rem" }}
-            />
-          </Menu.Item>
+          <Menu.SubMenu
+            key="cart"
+            title={
+              <>
+                <Badge count={2}>
+                  <Avatar
+                    size="large"
+                    icon={
+                      <ShoppingCartOutlined style={{ fontSize: "1.5rem" }} />
+                    }
+                  />
+                </Badge>
+              </>
+            }
+          >
+            <Menu.Item
+              key="cartItems"
+              style={{ height: "150px", width: "500px" }}
+            >
+              <CartItem></CartItem>
+            </Menu.Item>
+          </Menu.SubMenu>
           <Menu.SubMenu
             key="submenu"
             title={

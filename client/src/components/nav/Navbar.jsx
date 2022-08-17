@@ -55,7 +55,6 @@ const Navbar = () => {
                   />
                 </Col>
                 <Col>
-                  {" "}
                   <RightMenu mode={"horizontal"} />
                 </Col>
               </Row>
