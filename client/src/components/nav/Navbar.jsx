@@ -5,9 +5,12 @@ import LeftMenu from "./LeftMenu";
 import RightMenu from "./RightMenu";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../../store/users/userSlice";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const showDrawer = () => {
     setVisible(!visible);
   };
@@ -69,7 +72,28 @@ const Navbar = () => {
               style={{ zIndex: 99999 }}
             >
               <LeftMenu mode={"inline"} />
-              <RightMenu mode={"inline"} />
+              {isAuthenticated ? (
+                <RightMenu mode={"inline"} />
+              ) : (
+                <>
+                  <Link to="/sign-in">
+                    <h4 style={{ fontWeight: "400", marginLeft: "1.5rem" }}>
+                      Login
+                    </h4>
+                  </Link>
+                  <Link to="/sign-up">
+                    <h4
+                      style={{
+                        fontWeight: "400",
+                        marginLeft: "1.5rem",
+                        marginTop: "1.2rem",
+                      }}
+                    >
+                      Sign Up
+                    </h4>
+                  </Link>
+                </>
+              )}
             </Drawer>
           </div>
         </Layout.Header>

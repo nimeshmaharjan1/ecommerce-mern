@@ -60,7 +60,7 @@ const RightMenu = ({ mode, history }) => {
             key="submenu"
             title={
               <>
-                <Avatar size="large" src={user.avatar.url} />
+                <Avatar size="large" src={user.avatar?.url} />
                 <span className="username">John Doe</span>
               </>
             }

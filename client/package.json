@@ -53,5 +53,6 @@
   "devDependencies": {
     "sass": "^1.54.0"
   },
-  "proxy": "http://10.10.30.187:5000"
+  "proxy": "http://localhost:5000"
+
 }

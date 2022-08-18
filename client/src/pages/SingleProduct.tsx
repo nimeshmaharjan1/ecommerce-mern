@@ -1,8 +1,9 @@
-import { Col, Row, Button, Carousel, InputNumber } from "antd";
+import { Col, Row, Button, Carousel, InputNumber, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { storeStatus } from "../constants/constants.enum";
+import { User } from "../interfaces/user.interface";
 import { addToCart, selectCartItems } from "../store/cart/cartSlice";
 
 import {
@@ -11,16 +12,22 @@ import {
   selectProduct,
 } from "../store/products/singleProductSlice";
 import { AppDispatch } from "../store/store";
+import { selectIsAuthenticated, selectUser } from "../store/users/userSlice";
 import "../styles/SingleProduct.scss";
+import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
 import { toast } from "../utils/notification";
 const SingleProduct = () => {
   const [cartQuantity, setCartQuantity] = useState(1);
+  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
+  const navigate = useNavigate();
   const params: any = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const status = useSelector(getStatus);
   const product: any = useSelector(selectProduct);
+  const user: any = useSelector(selectUser);
+  const isAuthenticated: boolean = useSelector(selectIsAuthenticated);
   const increaseQuantity = () => {
-    if (cartQuantity == product.stock) return;
+    if (cartQuantity === product.stock) return;
     const qty = cartQuantity + 1;
     setCartQuantity(qty);
   };
@@ -30,10 +37,9 @@ const SingleProduct = () => {
     setCartQuantity(qty);
   };
   const contentStyle: React.CSSProperties = {
-    height: "600px",
+    height: "550px",
     color: "#fff",
     lineHeight: "160px",
-    textAlign: "center",
     background: "#364d79",
   };
   const addQuantityIcon = (
@@ -69,23 +75,34 @@ const SingleProduct = () => {
     </span>
   );
   const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        product: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.images[0].url,
-        stock: product.stock,
-        quantity: cartQuantity,
-      })
-    );
+    console.log({ user });
+    if (isAuthenticated) {
+      dispatch(
+        addToCart({
+          product: product._id,
+          name: product.name,
+          price: product.price,
+          image: product.images[0].url,
+          stock: product.stock,
+          quantity: cartQuantity,
+          userId: user._id,
+        })
+      );
+    } else {
+      setIsLoginModalVisible(true);
+    }
   };
+  const handleLoginOk = () => {
+    setIsLoginModalVisible(false);
+    navigate("/sign-in");
+  };
+  const handleLoginCancel = () => setIsLoginModalVisible(false);
   useEffect(() => {
     if (status === storeStatus.SUCCEEDED) {
-      toast("Success", "Product fetched successfully.", "success");
+      toast("Success", "Product fetched successfully.", "success", 2);
       console.log({ product });
     } else if (status === storeStatus.FAILED) {
-      toast("Error", "Please try again", "error");
+      toast("Error", "Please try again", "error", 2);
     }
     if (product.stock < 1) {
       setCartQuantity(0);
@@ -111,7 +128,6 @@ const SingleProduct = () => {
                 <img
                   style={contentStyle}
                   data-image="blue"
-                  className="active"
                   src="https://unblast.com/wp-content/uploads/2019/10/Model-T-shirt-Mockup-2.jpg"
                   alt=""
                 />
@@ -181,6 +197,15 @@ const SingleProduct = () => {
           </section>
         </Col> */}
       </Row>
+      <Modal
+        title="Login"
+        visible={isLoginModalVisible}
+        onOk={handleLoginOk}
+        okText={"Go to Login"}
+        onCancel={handleLoginCancel}
+      >
+        <p>You need to login before adding items to cart!</p>
+      </Modal>
     </>
   );
 };
