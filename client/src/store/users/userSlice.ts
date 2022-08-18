@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import { storeStatus } from "../../constants/constants.enum";
+import { User } from "../../interfaces/user.interface";
 import { axiosPost } from "../../utils/axios";
+import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
 import { RootState } from "../store";
 const initialState = {
-  user: undefined,
+  user: getLocalStorage("user") ? getLocalStorage("user") : undefined,
   status: storeStatus.IDLE,
   error: undefined,
+  isAuthenticated: false,
 };
 interface Login {
   username: string;
@@ -55,11 +57,14 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
-      state.user = undefined;
+      state.user = undefined as any;
       console.log("logout", state.user);
     },
     clearErrors: (state, action) => {
       state.error = undefined;
+    },
+    authenticate: (state) => {
+      state.isAuthenticated = true;
     },
   },
   extraReducers(builder) {
@@ -69,7 +74,9 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = storeStatus.SUCCEEDED;
-        state.user = action.payload;
+        state.user = action.payload as User;
+        state.isAuthenticated = true;
+        setLocalStorage("user", action.payload);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = storeStatus.FAILED;
@@ -82,14 +89,18 @@ const userSlice = createSlice({
         state.status = storeStatus.SUCCEEDED;
         console.log("register:", action.payload);
         state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = storeStatus.FAILED;
         state.error = action.error.message as any;
+        setLocalStorage("user", action.payload);
       });
   },
 });
 export const selectUser = (state: RootState) => state.userStore.user;
 export const selectStatus = (state: RootState) => state.userStore.status;
-export const { logout, clearErrors } = userSlice.actions;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.userStore.isAuthenticated;
+export const { logout, clearErrors, authenticate } = userSlice.actions;
 export default userSlice.reducer;

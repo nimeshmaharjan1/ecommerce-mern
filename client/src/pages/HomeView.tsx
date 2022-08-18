@@ -11,12 +11,19 @@ import {
   selectAllProducts,
 } from "../store/products/productsSlice";
 import { AppDispatch } from "../store/store";
+import { checkLocalStorage } from "../store/cart/cartSlice";
+import { authenticate, selectUser } from "../store/users/userSlice";
 const HomeView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const productStatus = useSelector(getProductStatus);
   const products = useSelector(selectAllProducts);
   const error = useSelector(getProductError);
+  const user = useSelector(selectUser);
   useEffect(() => {
+    dispatch(checkLocalStorage());
+    if (user) {
+      dispatch(authenticate());
+    }
     dispatch(
       getAllProducts({
         keyword: "",
@@ -26,7 +33,7 @@ const HomeView = () => {
         rating: 0,
       })
     );
-  }, [dispatch, error]);
+  }, [dispatch, error, user]);
   let homeSection: ReactNode;
   const spinnerStyle = {
     display: "flex",

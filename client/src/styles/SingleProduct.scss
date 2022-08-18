@@ -23,11 +23,12 @@
   margin-bottom: 1.2rem;
 }
 .product-description span {
-  font-size: 12px;
+  font-size: 0.8rem;
   color: #358ed7;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
+  font-weight: 500;
 }
 .product-description h1 {
   @include title();
