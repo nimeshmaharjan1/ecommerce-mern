@@ -16,6 +16,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import GhostBtn from "../components/buttons/GhostBtn";
 import { storeStatus } from "../constants/constants.enum";
+import { checkLocalStorage } from "../store/cart/cartSlice";
 import { AppDispatch, store } from "../store/store";
 import {
   login,
@@ -47,6 +48,7 @@ const SignIn: React.FC = () => {
     console.log(status);
     const { username, password } = values;
     dispatch(login({ username, password }));
+    dispatch(checkLocalStorage());
     console.log(status);
   };
   return (

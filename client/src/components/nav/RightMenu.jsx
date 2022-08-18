@@ -7,11 +7,13 @@ import { logout, selectUser } from "../../store/users/userSlice";
 
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import CartItem from "../cart/CartItem.tsx";
+import { checkLocalStorage, selectCartItems } from "../../store/cart/cartSlice";
 
 const RightMenu = ({ mode, history }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const cartItems = useSelector(selectCartItems);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const redirectLogin = () => {
     console.log("User redirect", user);
@@ -20,9 +22,9 @@ const RightMenu = ({ mode, history }) => {
     }
   };
   useEffect(() => {
-    console.log(user);
     user ? setIsLoggedIn(true) : setIsLoggedIn(false);
-  }, [user]);
+    dispatch(checkLocalStorage());
+  }, [user, dispatch]);
   return (
     <>
       {!isLoggedIn ? (
@@ -49,12 +51,15 @@ const RightMenu = ({ mode, history }) => {
               </>
             }
           >
-            <Menu.Item
-              key="cartItems"
-              style={{ height: "150px", width: "500px" }}
-            >
-              <CartItem></CartItem>
-            </Menu.Item>
+            {cartItems &&
+              cartItems.map((item) => (
+                <Menu.Item
+                  key={item.product}
+                  style={{ height: "150px", width: "500px" }}
+                >
+                  <CartItem item={item}></CartItem>
+                </Menu.Item>
+              ))}
           </Menu.SubMenu>
           <Menu.SubMenu
             key="submenu"

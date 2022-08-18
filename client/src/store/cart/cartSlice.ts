@@ -11,13 +11,19 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     checkLocalStorage: (state) => {
-      if (getLocalStorage("cartItems")) {
-        state.cartItems = getLocalStorage("cartItems");
-
-        console.log("Cart Items have been retrieved");
-        toast("Success", "Cart items have been retrieved", "success", 1);
-      } else {
-        console.log("no cart items");
+      let user: any;
+      if (getLocalStorage("user")) {
+        user = getLocalStorage("user");
+        if (getLocalStorage("cartItems")) {
+          console.log("cart user", getLocalStorage("cartItems")[0].userId);
+          state.cartItems = getLocalStorage("cartItems").filter(
+            (item: any) => item.userId === user._id
+          );
+          console.log("Cart Items have been retrieved");
+          toast("Success", "Cart items have been retrieved", "success", 1);
+        } else {
+          console.log("no cart items");
+        }
       }
     },
     addToCart: (state: any, action: any) => {

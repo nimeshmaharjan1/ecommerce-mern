@@ -75,7 +75,6 @@ const SingleProduct = () => {
     </span>
   );
   const handleAddToCart = () => {
-    console.log({ user });
     if (isAuthenticated) {
       dispatch(
         addToCart({
